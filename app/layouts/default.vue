@@ -1,5 +1,5 @@
 <template>
-  <div class="font-sans antialiased">
+  <div class="dark font-sans antialiased">
     <slot />
   </div>
 </template>
