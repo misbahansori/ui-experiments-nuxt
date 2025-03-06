@@ -51,7 +51,7 @@
         <StatsGrid />
         <!-- Table -->
         <div class="min-h-[100vh] flex-1 md:min-h-min">
-          <ContactsTable />
+          <ContactsDataTable />
         </div>
       </div>
     </SidebarInset>
