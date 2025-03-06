@@ -34,7 +34,7 @@
         <div class="flex items-center justify-between gap-4">
           <div class="space-y-1">
             <h1 class="text-2xl font-semibold">Oilà, Larry!</h1>
-            <p class="text-sm text-muted-foreground">
+            <p class="text-muted-foreground text-sm">
               Here's an overview of your contacts. Manage or create new ones
               with ease!
             </p>

@@ -81,13 +81,13 @@ const data = {
   <Sidebar>
     <SidebarHeader>
       <TeamSwitcher :teams="data.teams" />
-      <hr class="mx-2 -mt-px border-t border-border" />
+      <hr class="border-border mx-2 -mt-px border-t" />
       <SearchForm class="mt-3" />
     </SidebarHeader>
     <SidebarContent>
       <!-- We create a SidebarGroup for each parent. -->
       <SidebarGroup v-for="item in data.navMain" :key="item.title">
-        <SidebarGroupLabel class="uppercase text-muted-foreground/60">
+        <SidebarGroupLabel class="text-muted-foreground/60 uppercase">
           {{ item.title }}
         </SidebarGroupLabel>
         <SidebarGroupContent class="px-2">
@@ -98,7 +98,7 @@ const data = {
             >
               <SidebarMenuButton
                 as-child
-                class="group/menu-button h-9 gap-3 rounded-md bg-gradient-to-r font-medium hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+                class="group/menu-button hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 h-9 gap-3 rounded-md bg-gradient-to-r font-medium hover:bg-transparent [&>svg]:size-auto"
                 :is-active="menuItem.isActive"
               >
                 <a :href="menuItem.url">
@@ -118,11 +118,11 @@ const data = {
       </SidebarGroup>
     </SidebarContent>
     <SidebarFooter>
-      <hr class="mx-2 -mt-px border-t border-border" />
+      <hr class="border-border mx-2 -mt-px border-t" />
       <SidebarMenu>
         <SidebarMenuItem>
           <SidebarMenuButton
-            class="h-9 gap-3 rounded-md bg-gradient-to-r font-medium hover:bg-transparent hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 [&>svg]:size-auto"
+            class="hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 h-9 gap-3 rounded-md bg-gradient-to-r font-medium hover:bg-transparent [&>svg]:size-auto"
           >
             <Icon
               name="ri-logout-box-line"
