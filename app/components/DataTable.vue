@@ -47,7 +47,7 @@ const { table, columns, data } = defineProps<{
           >
             <FlexRender :render="header.column.columnDef.header" />
             <Icon
-              v-if="header.column.getCanSort()"
+              v-if="header.column.getIsSorted()"
               :name="
                 header.column.getIsSorted() === 'asc'
                   ? 'ri-arrow-up-s-line'
@@ -68,8 +68,13 @@ const { table, columns, data } = defineProps<{
           v-for="row in table.getRowModel().rows"
           :key="row.id"
           :data-state="row.getIsSelected() ? 'selected' : undefined"
+          class="hover:bg-accent/50 h-px border-0 [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
         >
-          <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+          <TableCell
+            v-for="cell in row.getVisibleCells()"
+            :key="cell.id"
+            class="h-[inherit] last:py-0"
+          >
             <FlexRender
               :render="cell.column.columnDef.cell"
               :props="cell.getContext()"
@@ -78,7 +83,9 @@ const { table, columns, data } = defineProps<{
         </TableRow>
       </template>
       <template v-else>
-        <TableRow>
+        <TableRow
+          class="hover:bg-transparent [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+        >
           <TableCell :colspan="columns.length" class="h-24 text-center">
             No results.
           </TableCell>
