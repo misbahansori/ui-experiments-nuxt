@@ -4,7 +4,9 @@
     <SidebarInset class="overflow-hidden px-4 md:px-6 lg:px-8">
       <header class="flex h-16 shrink-0 items-center gap-2 border-b">
         <div class="flex flex-1 items-center gap-2 px-3">
-          <SidebarTrigger class="-ms-4" />
+          <SidebarTrigger
+            class="text-muted-foreground/60 hover:text-foreground -ms-4"
+          />
           <Separator
             orientation="vertical"
             class="mr-2 data-[orientation=vertical]:h-4"
@@ -12,8 +14,13 @@
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem class="hidden md:block">
-                <BreadcrumbLink href="#">
-                  <Icon name="ri-scan-line" :size="22" aria-hidden="true" />
+                <BreadcrumbLink href="#" class="flex items-center gap-2">
+                  <Icon
+                    name="ri-scan-line"
+                    :size="22"
+                    aria-hidden="true"
+                    class="text-muted-foreground/60 hover:text-foreground"
+                  />
                   <span class="sr-only">Dashboard</span>
                 </BreadcrumbLink>
               </BreadcrumbItem>

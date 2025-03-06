@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PanelLeft } from "lucide-vue-next";
 import type { HTMLAttributes } from "vue";
 import { useSidebar } from "./utils";
 
@@ -20,7 +19,7 @@ const { toggleSidebar } = useSidebar();
     :class="cn('h-7 w-7', props.class)"
     @click="toggleSidebar"
   >
-    <PanelLeft />
+    <Icon name="ri-layout-left-line" :size="22" aria-hidden="true" />
     <span class="sr-only">Toggle Sidebar</span>
   </Button>
 </template>
