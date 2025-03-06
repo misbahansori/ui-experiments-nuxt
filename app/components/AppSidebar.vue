@@ -101,7 +101,7 @@ const data = {
                 class="group/menu-button hover:from-sidebar-accent hover:to-sidebar-accent/40 data-[active=true]:from-primary/20 data-[active=true]:to-primary/5 h-9 gap-3 rounded-md bg-gradient-to-r font-medium hover:bg-transparent [&>svg]:size-auto"
                 :is-active="menuItem.isActive"
               >
-                <a :href="menuItem.url">
+                <NuxtLink :to="menuItem.url">
                   <Icon
                     v-if="menuItem.icon"
                     :name="menuItem.icon"
@@ -110,7 +110,7 @@ const data = {
                     aria-hidden="true"
                   />
                   <span>{{ menuItem.title }}</span>
-                </a>
+                </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -126,8 +126,7 @@ const data = {
           >
             <Icon
               name="ri-logout-box-line"
-              class="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary"
-              :size="22"
+              class="text-muted-foreground/60 group-data-[active=true]/menu-button:text-primary size-5.5"
               aria-hidden="true"
             />
             <span>Sign Out</span>

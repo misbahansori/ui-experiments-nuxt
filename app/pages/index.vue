@@ -17,9 +17,8 @@
                 <BreadcrumbLink href="#" class="flex items-center gap-2">
                   <Icon
                     name="ri-scan-line"
-                    :size="22"
                     aria-hidden="true"
-                    class="text-muted-foreground/60 hover:text-foreground"
+                    class="text-muted-foreground/60 hover:text-foreground size-5.5"
                   />
                   <span class="sr-only">Dashboard</span>
                 </BreadcrumbLink>
