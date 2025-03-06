@@ -7,66 +7,83 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ColumnDef } from "@tanstack/vue-table";
+import type { ColumnDef, Table as VueTable } from "@tanstack/vue-table";
+import { FlexRender } from "@tanstack/vue-table";
 
-import { FlexRender, getCoreRowModel, useVueTable } from "@tanstack/vue-table";
-
-const props = defineProps<{
+const { table, columns, data } = defineProps<{
+  table: VueTable<TData>;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }>();
-
-const table = useVueTable({
-  get data() {
-    return props.data;
-  },
-  get columns() {
-    return props.columns;
-  },
-  getCoreRowModel: getCoreRowModel(),
-});
 </script>
 
 <template>
-  <div class="rounded-md border">
-    <Table>
-      <TableHeader>
-        <TableRow
-          v-for="headerGroup in table.getHeaderGroups()"
-          :key="headerGroup.id"
+  <Table
+    class="table-fixed border-separate border-spacing-0 [&_tr:not(:last-child)_td]:border-b"
+  >
+    <TableHeader>
+      <TableRow
+        v-for="headerGroup in table.getHeaderGroups()"
+        :key="headerGroup.id"
+        class="hover:bg-transparent"
+      >
+        <TableHead
+          v-for="header in headerGroup.headers"
+          :key="header.id"
+          :style="{ width: `${header.getSize()}px` }"
+          class="bg-sidebar border-border relative h-9 border-y select-none first:rounded-l-lg first:border-l last:rounded-r-lg last:border-r"
         >
-          <TableHead v-for="header in headerGroup.headers" :key="header.id">
-            <FlexRender
-              v-if="!header.isPlaceholder"
-              :render="header.column.columnDef.header"
-              :props="header.getContext()"
-            />
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <template v-if="table.getRowModel().rows?.length">
-          <TableRow
-            v-for="row in table.getRowModel().rows"
-            :key="row.id"
-            :data-state="row.getIsSelected() ? 'selected' : undefined"
+          <div
+            v-if="!header.isPlaceholder && header.column.getCanSort()"
+            :class="
+              cn(
+                header.column.getCanSort() &&
+                  'flex h-full cursor-pointer items-center gap-2 select-none',
+              )
+            "
+            @click="header.column.getToggleSortingHandler()"
+            @keydown.enter="header.column.getToggleSortingHandler()"
+            :tabindex="header.column.getCanSort() ? 0 : undefined"
           >
-            <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-              <FlexRender
-                :render="cell.column.columnDef.cell"
-                :props="cell.getContext()"
-              />
-            </TableCell>
-          </TableRow>
-        </template>
-        <template v-else>
-          <TableRow>
-            <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        </template>
-      </TableBody>
-    </Table>
-  </div>
+            <FlexRender :render="header.column.columnDef.header" />
+            <Icon
+              v-if="header.column.getCanSort()"
+              :name="
+                header.column.getIsSorted() === 'asc'
+                  ? 'ri-arrow-up-s-line'
+                  : 'ri-arrow-down-s-line'
+              "
+              class="shrink-0 opacity-60"
+              size="16"
+              aria-hidden="true"
+            />
+          </div>
+          <FlexRender v-else :render="header.column.columnDef.header" />
+        </TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <template v-if="table.getRowModel().rows?.length">
+        <TableRow
+          v-for="row in table.getRowModel().rows"
+          :key="row.id"
+          :data-state="row.getIsSelected() ? 'selected' : undefined"
+        >
+          <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+            <FlexRender
+              :render="cell.column.columnDef.cell"
+              :props="cell.getContext()"
+            />
+          </TableCell>
+        </TableRow>
+      </template>
+      <template v-else>
+        <TableRow>
+          <TableCell :colspan="columns.length" class="h-24 text-center">
+            No results.
+          </TableCell>
+        </TableRow>
+      </template>
+    </TableBody>
+  </Table>
 </template>

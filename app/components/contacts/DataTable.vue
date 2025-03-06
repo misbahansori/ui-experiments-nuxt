@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getCoreRowModel, useVueTable } from "@tanstack/vue-table";
 import { columns, type Contact } from "~/components/contacts/columns";
 
 const data = shallowRef<Contact[]>([
@@ -259,9 +260,158 @@ const data = shallowRef<Contact[]>([
     joinDate: "2023-09-10",
   },
 ]);
+
+const table = useVueTable({
+  data,
+  columns,
+  getCoreRowModel: getCoreRowModel(),
+});
 </script>
 <template>
-  <div class="rounded-md border">
-    <DataTable :columns="columns" :data="data" />
+  <div class="space-y-4">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <Input
+            ref="inputRef"
+            id="search"
+            placeholder="Search by name"
+            type="text"
+            aria-label="Search by name"
+            :class="
+              cn(
+                'peer bg-background from-accent/60 to-accent min-w-60 bg-gradient-to-br ps-9',
+                Boolean(table.getColumn('name')?.getFilterValue()) && 'pe-9',
+              )
+            "
+            :value="table.getColumn('name')?.getFilterValue() ?? ''"
+            @update:modelValue="
+              (value) => table.getColumn('name')?.setFilterValue(value)
+            "
+          />
+          <div
+            class="text-muted-foreground/60 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-2 peer-disabled:opacity-50"
+          >
+            <Icon name="ri-search-2-line" class="size-5" aria-hidden="true" />
+          </div>
+          <button
+            v-if="Boolean(table.getColumn('name')?.getFilterValue())"
+            class="text-muted-foreground/60 hover:text-foreground focus-visible:outline-ring/70 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg outline-offset-2 transition-colors focus:z-10 focus-visible:outline-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Clear filter"
+            @click="table.getColumn('name')?.setFilterValue('')"
+          >
+            <Icon
+              name="ri-close-circle-line"
+              class="size-5"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <AlertDialog v-if="table.getSelectedRowModel().rows.length > 0">
+          <AlertDialogTrigger as-child>
+            <Button class="ml-auto" variant="outline">
+              <Icon
+                name="ri-delete-bin-line"
+                class="size-4"
+                aria-hidden="true"
+              />
+              <span>delete</span>
+              <span
+                class="border-border bg-background text-muted-foreground/70 ms-1 inline-flex h-5 max-h-full items-center rounded border px-1 font-[inherit] text-[0.625rem] font-medium"
+              >
+                {{ table.getSelectedRowModel().rows.length }}
+              </span>
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <div
+              class="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4"
+            >
+              <div
+                class="border-border flex size-9 shrink-0 items-center justify-center rounded-full border"
+                aria-hidden="true"
+              >
+                <Icon name="ri-error-warning-line" class="size-4 opacity-80" />
+              </div>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to delete these rows?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  {{ table.getSelectedRowModel().rows.length }} selected rows.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+            </div>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+        <Popover>
+          <PopoverTrigger as-child>
+            <Button variant="outline">
+              <Icon name="ri-filter-3-line" class="size-4" aria-hidden="true" />
+              Filter
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent class="w-auto min-w-36 p-3" align="end">
+            <div class="space-y-3">
+              <div
+                class="text-muted-foreground/60 text-xs font-medium uppercase"
+              >
+                Status
+              </div>
+              <div class="space-y-3">
+                <Label class="flex items-center gap-2">
+                  <Checkbox
+                    @update:modelValue="
+                      (value) =>
+                        table
+                          .getColumn('status')
+                          ?.setFilterValue(value ? ['Active'] : '')
+                    "
+                  />
+                  <span class="flex grow justify-between gap-2 font-normal">
+                    Active
+                    <span class="text-muted-foreground ms-2 text-xs">
+                      {{
+                        data.filter((item) => item.status === "Active").length
+                      }}
+                    </span>
+                  </span>
+                </Label>
+                <Label class="flex items-center gap-2">
+                  <Checkbox
+                    @update:modelValue="
+                      (value) =>
+                        table
+                          .getColumn('status')
+                          ?.setFilterValue(value ? ['Inactive'] : '')
+                    "
+                  />
+                  <span class="flex grow justify-between gap-2 font-normal">
+                    Inactive
+                    <span class="text-muted-foreground ms-2 text-xs">
+                      {{
+                        data.filter((item) => item.status === "Inactive").length
+                      }}
+                    </span>
+                  </span>
+                </Label>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+        <Button variant="outline">
+          <Icon name="ri-filter-3-line" class="size-4" aria-hidden="true" />
+          New Filter
+        </Button>
+      </div>
+    </div>
+    <DataTable :table="table" :columns="columns" :data="data" />
   </div>
 </template>

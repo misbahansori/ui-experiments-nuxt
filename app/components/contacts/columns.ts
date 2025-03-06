@@ -33,8 +33,6 @@ export const columns: ColumnDef<Contact>[] = [
     id: "select",
     header: ({ table }) =>
       h(Checkbox, {
-        modelValue: table.getIsAllRowsSelected(),
-        "onUpdate:modelValue": (value) => table.toggleAllRowsSelected(!!value),
         ariaLabel: "Select all",
       }),
     cell: ({ row, table }) =>
