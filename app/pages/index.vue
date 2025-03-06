@@ -49,6 +49,7 @@
           <Button class="px-3">Add Contact</Button>
         </div>
         <!-- Numbers -->
+        <StatsGrid />
         <!-- Table -->
         <div class="min-h-[100vh] flex-1 md:min-h-min">
           <ContactsTable />
