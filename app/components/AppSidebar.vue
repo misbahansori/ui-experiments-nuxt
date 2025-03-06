@@ -78,7 +78,7 @@ const data = {
 </script>
 
 <template>
-  <Sidebar>
+  <Sidebar v-bind="$attrs">
     <SidebarHeader>
       <TeamSwitcher :teams="data.teams" />
       <hr class="border-border mx-2 -mt-px border-t" />
