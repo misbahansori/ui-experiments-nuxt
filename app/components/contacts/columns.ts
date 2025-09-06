@@ -1,6 +1,7 @@
 import { Icon } from "#components";
 import type { ColumnDef } from "@tanstack/vue-table";
 import { h } from "vue";
+import ContactValue from "~/components/contacts/ContactValue.vue";
 import DataTableDropDown from "~/components/contacts/DataTableDropDown.vue";
 import Badge from "~/components/ui/badge/Badge.vue";
 import { Button } from "~/components/ui/button";
@@ -41,7 +42,7 @@ export const columns: ColumnDef<Contact>[] = [
         "onUpdate:modelValue": (value) => row.toggleSelected(!!value),
         ariaLabel: "Select row",
       }),
-    size: 28,
+    size: 32,
     enableSorting: false,
     enableHiding: false,
   },
@@ -74,17 +75,25 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "status",
     cell: ({ row }) =>
       h("div", { class: "flex items-center h-full" }, [
-        h(Badge, { variant: "outline", class: "gap-1 py-0.5 px-2 text-sm" }, [
-          row.original.status === "Active"
-            ? h(Icon, {
-                name: "ri-check-line",
-                class: "text-emerald-500",
-                size: 14,
-                ariaHidden: "true",
-              })
-            : "- ",
-          row.original.status,
-        ]),
+        h(
+          Badge,
+          {
+            variant: "outline",
+            class:
+              "gap-1 py-0.5 px-2 font-normal text-muted-foreground text-sm",
+          },
+          [
+            row.original.status === "Active"
+              ? h(Icon, {
+                  name: "ri-check-line",
+                  class: "text-emerald-500",
+                  size: 14,
+                  ariaHidden: "true",
+                })
+              : "- ",
+            row.original.status,
+          ],
+        ),
       ]),
     size: 110,
   },
@@ -118,36 +127,28 @@ export const columns: ColumnDef<Contact>[] = [
     header: "Referral",
     accessorKey: "referral",
     cell: ({ row }) =>
-      h("div", { class: "flex items-center h-full" }, [
+      h("div", { class: "flex items-center h-full gap-3" }, [
         h("img", {
           class: "rounded-full",
           src: row.original.referral.image,
-          width: 32,
-          height: 32,
-          alt: row.getValue("referral"),
+          width: 20,
+          height: 20,
+          alt: row.original.referral.name,
         }),
-        h("div", { class: "font-medium" }, row.getValue("referral")),
+        h(
+          "div",
+          { class: "text-muted-foreground" },
+          row.original.referral.name,
+        ),
       ]),
+    size: 140,
   },
   {
     header: "Value",
     accessorKey: "value",
     cell: ({ row }) =>
-      h(TooltipProvider, { delayDuration: 0 }, [
-        h(Tooltip, { align: "start", sideOffset: -8 }, [
-          h(TooltipTrigger, [
-            h("div", { class: "flex h-full w-full items-center" }, [
-              h(Progress, {
-                class: "h-1 max-w-14",
-                value: row.getValue("value"),
-              }),
-            ]),
-          ]),
-          h(TooltipContent, { align: "start", sideOffset: -8 }, [
-            h("p", row.getValue("value") + "%"),
-          ]),
-        ]),
-      ]),
+      h(ContactValue, { value: row.original.value, class: "w-full" }),
+    size: 140,
   },
   {
     id: "actions",
