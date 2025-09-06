@@ -78,7 +78,7 @@ const { table, columns, data } = defineProps<{
           <TableCell
             v-for="cell in row.getVisibleCells()"
             :key="cell.id"
-            class="h-[inherit] p-3 last:py-0"
+            class="h-[inherit] px-2 py-3 last:py-0"
           >
             <FlexRender
               :render="cell.column.columnDef.cell"

@@ -3,16 +3,8 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import { h } from "vue";
 import ContactValue from "~/components/contacts/ContactValue.vue";
 import DataTableDropDown from "~/components/contacts/DataTableDropDown.vue";
-import Badge from "~/components/ui/badge/Badge.vue";
-import { Button } from "~/components/ui/button";
+import { Badge } from "~/components/ui/badge";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Progress } from "~/components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 
 export type Contact = {
   id: string;
@@ -34,9 +26,13 @@ export const columns: ColumnDef<Contact>[] = [
     id: "select",
     header: ({ table }) =>
       h(Checkbox, {
+        // modelValue:
+        //   table.getIsAllRowsSelected() ||
+        //   (table.getIsSomeRowsSelected() && "indeterminate"),
+        // "onUpdate:modelValue": (value) => table.toggleAllRowsSelected(!!value),
         ariaLabel: "Select all",
       }),
-    cell: ({ row, table }) =>
+    cell: ({ row }) =>
       h(Checkbox, {
         modelValue: row.getIsSelected(),
         "onUpdate:modelValue": (value) => row.toggleSelected(!!value),
@@ -82,7 +78,7 @@ export const columns: ColumnDef<Contact>[] = [
             class:
               "gap-1 py-0.5 px-2 font-normal text-muted-foreground text-sm",
           },
-          [
+          () => [
             row.original.status === "Active"
               ? h(Icon, {
                   name: "ri-check-line",

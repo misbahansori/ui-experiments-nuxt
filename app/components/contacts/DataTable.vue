@@ -234,8 +234,12 @@ const data = shallowRef<Contact[]>([
 ]);
 
 const table = useVueTable({
-  data,
-  columns,
+  get data() {
+    return data.value;
+  },
+  get columns() {
+    return columns;
+  },
   getCoreRowModel: getCoreRowModel(),
   getSortedRowModel: getSortedRowModel(),
   enableSortingRemoval: false,
