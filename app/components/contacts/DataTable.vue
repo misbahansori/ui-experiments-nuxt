@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { getCoreRowModel, useVueTable } from "@tanstack/vue-table";
+import {
+  getCoreRowModel,
+  getSortedRowModel,
+  useVueTable,
+} from "@tanstack/vue-table";
 import { columns, type Contact } from "~/components/contacts/columns";
 
 const data = shallowRef<Contact[]>([
@@ -233,6 +237,8 @@ const table = useVueTable({
   data,
   columns,
   getCoreRowModel: getCoreRowModel(),
+  getSortedRowModel: getSortedRowModel(),
+  enableSortingRemoval: false,
 });
 </script>
 <template>

@@ -137,7 +137,7 @@ export const columns: ColumnDef<Contact>[] = [
         }),
         h(
           "div",
-          { class: "text-muted-foreground" },
+          { class: "text-muted-foreground whitespace-pre-wrap" },
           row.original.referral.name,
         ),
       ]),

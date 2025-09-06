@@ -41,18 +41,23 @@ const { table, columns, data } = defineProps<{
                   'flex h-full cursor-pointer items-center gap-2 select-none',
               )
             "
-            @click="header.column.getToggleSortingHandler()"
-            @keydown.enter="header.column.getToggleSortingHandler()"
+            @click="header.column.getToggleSortingHandler()?.($event)"
+            @keydown.enter="header.column.getToggleSortingHandler()?.($event)"
             :tabindex="header.column.getCanSort() ? 0 : undefined"
           >
             <FlexRender :render="header.column.columnDef.header" />
             <Icon
-              v-if="header.column.getIsSorted()"
-              :name="
-                header.column.getIsSorted() === 'asc'
-                  ? 'ri-arrow-up-s-line'
-                  : 'ri-arrow-down-s-line'
-              "
+              v-if="header.column.getIsSorted() === 'asc'"
+              :key="'asc'"
+              name="ri:arrow-up-s-line"
+              class="shrink-0 opacity-60"
+              size="16"
+              aria-hidden="true"
+            />
+            <Icon
+              v-if="header.column.getIsSorted() === 'desc'"
+              :key="'desc'"
+              name="ri:arrow-down-s-line"
               class="shrink-0 opacity-60"
               size="16"
               aria-hidden="true"
@@ -73,7 +78,7 @@ const { table, columns, data } = defineProps<{
           <TableCell
             v-for="cell in row.getVisibleCells()"
             :key="cell.id"
-            class="h-[inherit] last:py-0"
+            class="h-[inherit] p-3 last:py-0"
           >
             <FlexRender
               :render="cell.column.columnDef.cell"
