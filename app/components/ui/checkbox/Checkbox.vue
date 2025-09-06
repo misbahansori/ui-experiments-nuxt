@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { reactiveOmit } from "@vueuse/core";
 import { Check } from "lucide-vue-next";
 import type { CheckboxRootEmits, CheckboxRootProps } from "reka-ui";
 import { CheckboxIndicator, CheckboxRoot, useForwardPropsEmits } from "reka-ui";
-import { computed, type HTMLAttributes } from "vue";
+import type { HTMLAttributes } from "vue";
 import { cn } from "~/utils/cn";
 
 const props = defineProps<
@@ -10,30 +11,28 @@ const props = defineProps<
 >();
 const emits = defineEmits<CheckboxRootEmits>();
 
-const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
-
-  return delegated;
-});
+const delegatedProps = reactiveOmit(props, "class");
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
   <CheckboxRoot
+    data-slot="checkbox"
     v-bind="forwarded"
     :class="
       cn(
-        'peer border-primary ring-offset-background focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground h-4 w-4 shrink-0 rounded-sm border focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'peer border-input data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive size-4 shrink-0 rounded-[4px] border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
         props.class,
       )
     "
   >
     <CheckboxIndicator
-      class="flex h-full w-full items-center justify-center text-current"
+      data-slot="checkbox-indicator"
+      class="flex items-center justify-center text-current transition-none"
     >
       <slot>
-        <Check class="h-4 w-4" />
+        <Check class="size-3.5" />
       </slot>
     </CheckboxIndicator>
   </CheckboxRoot>
