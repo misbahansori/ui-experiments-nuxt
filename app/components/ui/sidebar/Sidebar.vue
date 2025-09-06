@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
+import { cn } from "~/utils/cn";
 import type { SidebarProps } from ".";
 import { SIDEBAR_WIDTH_MOBILE, useSidebar } from "./utils";
 

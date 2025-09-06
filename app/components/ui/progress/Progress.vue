@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cn } from "@/lib/utils";
 import { reactiveOmit } from "@vueuse/core";
 import type { ProgressRootProps } from "reka-ui";
 import { ProgressIndicator, ProgressRoot } from "reka-ui";
 import type { HTMLAttributes } from "vue";
+import { cn } from "~/utils/cn";
 
 const props = withDefaults(
   defineProps<ProgressRootProps & { class?: HTMLAttributes["class"] }>(),
